@@ -1,0 +1,46 @@
+plugins {
+    id 'java'
+    id 'kr.entree.spigradle' version '2.2.4'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+group 'us.pyropalace'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+
+    maven {
+        name = "spigotmc-repo"
+        url = 'https://hub.spigotmc.org/nexus/content/groups/public'
+    }
+
+    maven {
+        name = "jitpack"
+        url = 'https://jitpack.io'
+    }
+}
+
+dependencies {
+    compileOnly('org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT')
+
+    compileOnly('org.projectlombok:lombok:1.18.24')
+    annotationProcessor('org.projectlombok:lombok:1.18.24')
+}
+
+compileJava {
+    options.compilerArgs += ["-parameters"]
+    options.fork = true
+    options.forkOptions.executable = 'javac'
+    options.encoding = "UTF-8"
+}
+
+shadowJar {
+    archiveClassifier.set("")
+    archiveFileName.set("inventories.jar")
+}
+
+tasks.build.dependsOn(shadowJar)
