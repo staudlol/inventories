@@ -6,6 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 @Getter
 public class InventoryHandler {
@@ -21,7 +22,7 @@ public class InventoryHandler {
                 final InventoryPlayer inventoryPlayer = (InventoryPlayer) section.get(key);
 
                 this.inventoryPlayers.put(key, inventoryPlayer);
-                System.out.println("Loaded " + this.inventoryPlayers.size() + " inventories.");
+                System.out.println("Loaded" + this.inventoryPlayers.size() + " inventories.");
             }
         } else {
             System.out.println("No inventories found.");
@@ -36,9 +37,25 @@ public class InventoryHandler {
 
     public void saveInventory(InventoryPlayer inventoryPlayer) {
         final FileConfiguration configuration = InventorySpigotPlugin.getInstance().getConfig();
+
+        if (!configuration.contains("inventories")) {
+            configuration.createSection("inventories");
+        }
+
         final ConfigurationSection section = configuration.getConfigurationSection("inventories");
 
         section.set(inventoryPlayer.getUniqueId().toString(), inventoryPlayer);
         InventorySpigotPlugin.getInstance().saveConfig();
+    }
+
+    /**
+     * Find a {@link InventoryPlayer} by their {@link UUID}
+     *
+     * @param uniqueId the uniqueId.
+     * @return the inventoryPlayer.
+     */
+
+    public InventoryPlayer findPlayer(UUID uniqueId) {
+        return this.inventoryPlayers.get(uniqueId.toString());
     }
 }

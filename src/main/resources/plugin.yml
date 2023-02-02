@@ -3,3 +3,7 @@ version: 1.0-SNAPSHOT
 main: io.github.staudlol.inventories.InventorySpigotPlugin
 
 author: Staud
+
+commands:
+  loadinventory:
+  saveinventory:
