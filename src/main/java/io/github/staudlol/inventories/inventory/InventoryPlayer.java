@@ -1,4 +1,4 @@
-package io.github.staudlol.inventories.player;
+package io.github.staudlol.inventories.inventory;
 
 import lombok.Data;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
