@@ -1,7 +1,7 @@
 package io.github.staudlol.inventories.command.load;
 
 import io.github.staudlol.inventories.InventorySpigotPlugin;
-import io.github.staudlol.inventories.inventory.InventoryPlayer;
+import io.github.staudlol.inventories.profile.PlayerProfile;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,14 +25,14 @@ public class LoadInventoryCommand implements CommandExecutor {
             return true;
         }
 
-        final InventoryPlayer inventoryPlayer = InventorySpigotPlugin.getInstance().getInventoryHandler().findPlayer(player.getUniqueId());
+        final PlayerProfile playerProfile = InventorySpigotPlugin.getInstance().getProfileHandler().findOrCreateProfile(player.getUniqueId(), null);
 
-        if (inventoryPlayer == null) {
+        if (playerProfile.getContents() == null) {
             player.sendMessage(ChatColor.RED + "You don't have a saved inventory.");
             return true;
         }
 
-        inventoryPlayer.applyInventory(player);
+        playerProfile.applyInventory(player);
         return true;
     }
 }

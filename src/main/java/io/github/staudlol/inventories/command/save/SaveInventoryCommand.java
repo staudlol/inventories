@@ -1,7 +1,7 @@
 package io.github.staudlol.inventories.command.save;
 
 import io.github.staudlol.inventories.InventorySpigotPlugin;
-import io.github.staudlol.inventories.inventory.InventoryPlayer;
+import io.github.staudlol.inventories.profile.PlayerProfile;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,12 +19,16 @@ public class SaveInventoryCommand implements CommandExecutor {
         }
 
         final Player player = (Player) sender;
-        final InventoryPlayer inventoryPlayer = new InventoryPlayer(player.getUniqueId());
+        final PlayerProfile playerProfile = InventorySpigotPlugin.getInstance().getProfileHandler().findOrCreateProfile(player.getUniqueId(), null);
 
-        inventoryPlayer.setContents(player.getInventory().getContents());
-        inventoryPlayer.setArmorContents(player.getInventory().getArmorContents());
+        if (playerProfile == null) {
+            playerProfile.getPlayer().sendMessage(ChatColor.RED + "Please re-login as your profile was not found.");
+        }
 
-        InventorySpigotPlugin.getInstance().getInventoryHandler().saveInventory(inventoryPlayer);
+        playerProfile.setContents(player.getInventory().getContents());
+        playerProfile.setArmorContents(player.getInventory().getArmorContents());
+
+        InventorySpigotPlugin.getInstance().getProfileHandler().saveInventory(playerProfile);
 
         player.sendMessage(ChatColor.GREEN + "Your inventory has been saved.");
         return true;
